@@ -4,7 +4,7 @@
 import { ReactInstance, Module, Surface } from 'react-360-web';
 
 function init(bundle, parent, options = {}) {
-  const r360 = new ReactInstance(bundle, parent, {
+  r360 = new ReactInstance(bundle, parent, {
     // Add custom options here
     fullScreen: true,
     nativeModules: [
@@ -12,10 +12,20 @@ function init(bundle, parent, options = {}) {
     ],
     ...options,
   });
+  buttonService = new Surface(300, 300, Surface.SurfaceShape.Flat);
+  buttonService.setAngle(
+    5,0
+    )
+
+  r360.renderToSurface(
+    r360.createRoot('buttonService', { /* initial props */ }),
+    buttonService
+    )
   surface = r360.getDefaultSurface();
+
   // Render your app content to the default cylinder surface
   //default is 1000 * 600
-  r360.renderToSurface(
+  surfacePanel = r360.renderToSurface(
     r360.createRoot('surfacesExample', { /* initial props */ }),
     surface
   );
@@ -27,6 +37,17 @@ function init(bundle, parent, options = {}) {
 class surfaceModule extends Module {
   constructor() {
     super('surfaceModule');
+  }
+
+  createPanel(){
+    surfacePanel = r360.renderToSurface(
+      r360.createRoot("surfacesExample",{} ),
+      surface
+      );
+  }
+
+  destroyPanel(){
+    r360.detachRoot(surfacePanel)
   }
   resizeSurface(width,height){
     surface.resize(width, height);

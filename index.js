@@ -10,6 +10,19 @@ import {
 
 const surfaceModule = NativeModules.surfaceModule;
 
+class buttonService extends React.Component{
+   render(){
+     return(
+       <View style={styles.buttonPanel}>
+       <VrButton style={styles.greetingBox}
+       onClick={()=> surfaceModule.createPanel() }>
+       <Text>Create</Text>
+       </VrButton>
+       </View>
+       )
+   }
+  }
+
 export default class surfacesExample extends React.Component {
 
   state = {
@@ -17,6 +30,7 @@ export default class surfacesExample extends React.Component {
     height: 600,
   }
 
+  
   changeSurface(width, height){
     surfaceModule.resizeSurface(width, height)
     this.setState({
@@ -48,7 +62,8 @@ export default class surfacesExample extends React.Component {
           <Text>Reset</Text>
         </VrButton>
 
-        <VrButton style={styles.greetingBox}>
+        <VrButton style={styles.greetingBox}
+        onClick={()=> surfaceModule.destroyPanel() }>
           <Text>Destroy</Text>
         </VrButton>
       </View>
@@ -81,5 +96,5 @@ panel: {
     alignItems: 'center'
   }
 });
-
+AppRegistry.registerComponent('buttonService', ()=> buttonService );
 AppRegistry.registerComponent('surfacesExample', () => surfacesExample);
